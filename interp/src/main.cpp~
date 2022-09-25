@@ -1,0 +1,19 @@
+
+#include "defines.h"
+#include "debug.h"
+
+
+int main(int argc, const char * argv[]){
+
+  Chunk chunk;
+  PRINT_ARRAY(chunk);
+  init_chunk(&chunk);
+  write_chunk(&chunk, OP_RETURN);
+  PRINT_ARRAY(chunk);
+
+  dissasemble_chunk(&chunk, "test chunk");
+  free_chunk(&chunk);
+  
+  
+  PRINT_ARRAY(chunk);
+};

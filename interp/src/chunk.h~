@@ -1,0 +1,31 @@
+#pragma once
+#include "defines.h"
+#include "clox_value.h"
+#include "chunk_types.h"
+#include "list_types.h"
+#include <stdlib.h>
+
+enum {OP_RETURN,};
+
+PINLINE void init_chunk(Chunk * chunk){
+
+  chunk->count = 0;
+  chunk->capacity = 0;
+  chunk->actual_array = NULL;
+
+};
+
+PINLINE void write_chunk(Chunk * chunk, u8 byte){
+
+  if(chunk->capacity < chunk->count + 1){
+
+    u32 old_capacity = chunk->capacity;
+    chunk->capacity = GROW_CAPACITY(old_capacity);
+    chunk->actual_array = GROW_ARRAY(u8, chunk->actual_array, old_capacity,chunk->capacity);
+    
+  }
+
+  chunk->actual_array[chunk->count] = byte;
+  chunk->count++;
+
+}

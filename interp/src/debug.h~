@@ -1,0 +1,52 @@
+#pragma once
+#include <stdio.h>
+#include "defines.h"
+#include "chunk.h"
+
+#define PRINT_ARRAY(array)   printf("count: %d.\n capacity: \
+ %d.\n actual _array: %zd.\n", array.count, array.capacity, \
+				    (size_t)array.actual_array) \
+
+
+PINLINE i32 simple_instruction(const b8 * name, i32 offset){
+
+  printf("%s\n", name);
+  return offset + 1;
+  
+
+};
+
+PINLINE i32 dissasemble_instruction(Chunk * chunk, int offset){
+
+  printf("%04d ", offset);
+
+  u8 instruction = chunk->actual_array[offset];
+  switch(instruction){
+
+  case OP_RETURN:
+    return simple_instruction("OP_RETURN", offset);
+  default:
+    printf("unknown opcode %d\n", instruction);
+    return offset + 1;
+  }
+  
+};
+
+PINLINE void dissasemble_chunk(Chunk * chunk, const char * name){
+
+  printf("== %s ==\n", name);
+
+  for(i32 offset = 0; offset < chunk->count;){
+
+    offset = dissasemble_instruction(chunk, offset);
+
+  } 
+  
+  
+
+};
+
+
+
+
+

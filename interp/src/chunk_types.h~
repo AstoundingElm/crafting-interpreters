@@ -1,0 +1,10 @@
+#pragma once
+
+struct Chunk{
+
+  i32 count;
+  i32 capacity;
+  u8 * actual_array;
+  Value_Array constants;
+  
+};
