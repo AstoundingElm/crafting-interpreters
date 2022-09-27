@@ -2,7 +2,7 @@
 
 #include "defines.h"
 #include "chunk.h"
-
+#include "scanner.h"
 #define STACK_MAX 256
 
 struct VM{
@@ -110,13 +110,51 @@ PINLINE void init_vm(){
 
 };
 
+PINLINE void compile(const b8 * source, Chunk * chunk){
+
+  init_scanner(source);
+  /*  i32 line = -1;
+  for(;;){
+
+    Token token = scan_token();
+    if(token.line != line){
+      printf("%4d", token.line);
+      line = token.line;
+    }else{
+
+      printf("   | ");
+      
+    }
+
+    printf("%2d '%.*s'\n", token.type, token.length, token.start);
+
+    if(token.type == TOKEN_EOF)
+      break;
+  };
+
+  */
+};
+
 PINLINE void free_vm(){};
 
-PINLINE INTERPRETRESULT interpret(Chunk * chunk){
+PINLINE INTERPRETRESULT interpret(const b8 * source){
 
+  Chunk chunk;
 
-  vm.chunk = chunk;
-  vm.ip = vm.chunk->actual_array;
-  return run();
+  init_chunl(&chunk);
+
+  
+  if(!  compile(source, &chunk)){
+    free_chunk(&chunk);
+    return INTERPRET_COMPILE_ERROR;
+  };
+
+  vm.chunk = &chunk;
+  vm.ip = vm.chunk->code;
+
+  INTERPRETRESULT result = run();
+  free_chunk(&chunk);
+  
+  return result;
   
 };
